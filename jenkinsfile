@@ -2,7 +2,6 @@ pipeline {
     agent { label 'nodejs' } 
 
     environment {
-        NODE_ENV = 'staging'
         NVM_DIR = "/home/ammar/.nvm"
         NODE_VERSION = "v18.16.1"
     }
