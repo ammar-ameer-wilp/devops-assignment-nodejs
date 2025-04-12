@@ -37,7 +37,8 @@ pipeline {
                             nvm use $NODE_VERSION
                             node -v
                             npm -v
-                            npm run test
+                            npm install
+                            npx jest
                         '''
                     } catch (e) {
                         echo "Tests failed: ${e}"
