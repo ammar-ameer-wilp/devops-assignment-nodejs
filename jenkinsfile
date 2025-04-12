@@ -74,7 +74,7 @@ pipeline {
                 sh '''
                     echo "Deploying to Staging..."
                     export NVM_DIR="$HOME/.nvm"
-                    [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
+                    [ -s "$NVM_DIR/nvm.sh" ] && \\. "$NVM_DIR/nvm.sh"
                     nvm use $NODE_VERSION
         
                     pm2 delete staging || true
@@ -90,7 +90,7 @@ pipeline {
                 sh '''
                     echo "Deploying to Production..."
                     export NVM_DIR="$HOME/.nvm"
-                    [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
+                    [ -s "$NVM_DIR/nvm.sh" ] && \\. "$NVM_DIR/nvm.sh"
                     nvm use $NODE_VERSION
         
                     pm2 delete production || true
