@@ -2,7 +2,7 @@ pipeline {
     agent { label 'nodejs' } 
 
     environment {
-        NODE_ENV = 'production'
+        NODE_ENV = 'staging'
         NVM_DIR = "/home/ammar/.nvm"
         NODE_VERSION = "v18.16.1"
     }
@@ -37,7 +37,7 @@ pipeline {
                             nvm use $NODE_VERSION
                             node -v
                             npm -v
-                            npm install
+                            npm install --include=dev
                             npx jest
                         '''
                     } catch (e) {
