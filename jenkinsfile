@@ -1,8 +1,10 @@
 pipeline {
-    agent { label 'nodejs' } // replace with the label you assigned to the agent
+    agent { label 'nodejs' } 
 
     environment {
         NODE_ENV = 'production'
+        NVM_DIR = "/home/ammar/.nvm"
+        NODE_VERSION = "v18.16.1"
     }
 
     stages {
@@ -14,19 +16,42 @@ pipeline {
 
         stage('Install') {
             steps {
-                sh 'npm install'
+                sh '''
+                    export NVM_DIR="$HOME/.nvm"
+                    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+                    nvm use $NODE_VERSION
+                    node -v
+                    npm -v
+                    npm install
+                '''
             }
         }
 
         stage('Test') {
             steps {
-                sh 'npm test'
+                script {
+                    try {
+                        sh 'npm run test'
+                    } catch (e) {
+                        echo "Tests failed: ${e}"
+                        currentBuild.result = 'FAILURE'
+                        throw e
+                    }
+                }
             }
         }
 
         stage('Build') {
             steps {
-                sh 'npm run build'
+                script {
+                    try {
+                        sh 'npm run build'
+                    } catch (e) {
+                        echo "Build failed: ${e}"
+                        currentBuild.result = 'FAILURE'
+                        throw e
+                    }
+                }
             }
         }
 
